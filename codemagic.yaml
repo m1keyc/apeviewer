@@ -30,15 +30,12 @@ workflows:
       vars:
         CARGO_BUILD_JOBS: 2
         MACOSX_DEPLOYMENT_TARGET: "13.0"
-    cache:
-      cache_paths:
-        - ~/.cargo/registry
-        - ~/.cargo/git
     scripts:
       - name: Verify and unpack the pinned source
         script: |
           set -euo pipefail
           set +x
+          test "${APE_PRIVATE_BUILD_VERIFIED:-}" = "1"
           python3 - <<'PY'
           import hashlib, os, pathlib, re, tarfile, urllib.error, urllib.parse, urllib.request
           url = os.environ.get('SOURCE_ARCHIVE_URL', '')
@@ -73,56 +70,21 @@ workflows:
           pathlib.Path('source-root.txt').write_text(str(source), encoding='utf-8')
           print('Pinned source archive verified and unpacked')
           PY
-      - name: Check the Apple capture helper
+      - name: Run the pinned private package recipe
         script: |
           set -euo pipefail
+          set +x
+          test "${APE_PRIVATE_BUILD_VERIFIED:-}" = "1"
           cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
           test "$(uname -s)" = Darwin
           test "$(uname -m)" = arm64
-          mkdir -p target/platform-evidence
-          xcrun --sdk macosx swiftc -parse-as-library -swift-version 5 -target arm64-apple-macos13.0 -typecheck src/platform/desktop/capture/macos.swift 2>&1 | tee target/platform-evidence/macos-swift-check.log
-      - name: Prepare Rust and codec tools
-        script: |
-          set -euo pipefail
-          cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
-          brew install ffmpeg pkg-config
-          if ! command -v rustup >/dev/null 2>&1; then
-            brew install rustup
-            export PATH="$(brew --prefix rustup)/bin:$PATH"
-          fi
-          rustup toolchain install 1.98.1 --profile minimal
-          rustc +1.98.1 --version | tee target/platform-evidence/macos-rust-version.log
-          pkg-config --modversion libavcodec libavformat libavutil libswscale | tee target/platform-evidence/macos-codec-versions.log
-      - name: Check and test all targets
-        script: |
-          set -euo pipefail
-          cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
-          rustup_prefix="$(brew --prefix rustup 2>/dev/null || true)"
-          if [ -n "$rustup_prefix" ] && [ -d "$rustup_prefix/bin" ]; then export PATH="$rustup_prefix/bin:$PATH"; fi
-          cargo +1.98.1 check --locked --all-targets 2>&1 | tee target/platform-evidence/macos-check.log
-          cargo +1.98.1 test --locked --all-targets -- --test-threads=1 2>&1 | tee target/platform-evidence/macos-tests.log
-      - name: Build and package development output
-        script: |
-          set -euo pipefail
-          cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
-          rustup_prefix="$(brew --prefix rustup 2>/dev/null || true)"
-          if [ -n "$rustup_prefix" ] && [ -d "$rustup_prefix/bin" ]; then export PATH="$rustup_prefix/bin:$PATH"; fi
-          cargo +1.98.1 build --release --locked 2>&1 | tee target/platform-evidence/macos-release.log
-          bash tools/package-native.sh 2>&1 | tee target/platform-evidence/macos-package.log
-          target/release/APEViewer --version | tee target/platform-evidence/macos-version.log
-          otool -L target/release/APEViewer > target/platform-evidence/macos-linked-libraries.log
-          {
-            uname -s
-            uname -m
-            sw_vers -productVersion
-            xcodebuild -version
-            printf 'Source commit: %s\n' "$SOURCE_COMMIT"
-            printf 'Development output only; desktop and interoperability acceptance remains separate.\n'
-          } > target/platform-evidence/macos-provenance.log
+          test -f tools/codemagic-macos.sh
+          export APE_SOURCE_COMMIT="$SOURCE_COMMIT"
+          export APE_SOURCE_ARCHIVE_SHA256="$SOURCE_ARCHIVE_SHA256"
+          unset SOURCE_ARCHIVE_URL
+          bash tools/codemagic-macos.sh --arch arm64 --budget-seconds 2400
     artifacts:
-      - native-source/*/dist/*development.zip
-      - native-source/*/dist/*development.sha256
-      - native-source/*/target/platform-evidence/macos-*.log
+      - native-source/*/dist/macos-ci/**/*
 
   development-runtime:
     name: Development runtime environment
