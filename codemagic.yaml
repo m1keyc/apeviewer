@@ -1,0 +1,20 @@
+workflows:
+  environment-preflight:
+    name: Native build environment check
+    instance_type: mac_mini_m2
+    max_build_duration: 5
+    scripts:
+      - name: Record the Apple build environment
+        script: |
+          set -euo pipefail
+          mkdir -p build-preflight
+          {
+            uname -s
+            uname -m
+            sw_vers -productVersion
+            xcodebuild -version
+            xcrun --show-sdk-path
+          } | tee build-preflight/environment.txt
+          printf 'No application source was fetched or built.\n' >> build-preflight/environment.txt
+    artifacts:
+      - build-preflight/environment.txt
