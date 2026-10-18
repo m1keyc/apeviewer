@@ -30,7 +30,7 @@ workflows:
       vars:
         CARGO_BUILD_JOBS: 2
         MACOSX_DEPLOYMENT_TARGET: "13.0"
-    caching:
+    cache:
       cache_paths:
         - ~/.cargo/registry
         - ~/.cargo/git
@@ -97,14 +97,16 @@ workflows:
         script: |
           set -euo pipefail
           cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
-          if [ -d "$(brew --prefix rustup 2>/dev/null)/bin" ]; then export PATH="$(brew --prefix rustup)/bin:$PATH"; fi
+          rustup_prefix="$(brew --prefix rustup 2>/dev/null || true)"
+          if [ -n "$rustup_prefix" ] && [ -d "$rustup_prefix/bin" ]; then export PATH="$rustup_prefix/bin:$PATH"; fi
           cargo +1.98.1 check --locked --all-targets 2>&1 | tee target/platform-evidence/macos-check.log
           cargo +1.98.1 test --locked --all-targets -- --test-threads=1 2>&1 | tee target/platform-evidence/macos-tests.log
       - name: Build and package development output
         script: |
           set -euo pipefail
           cd "$(cat "$CM_BUILD_DIR/source-root.txt")"
-          if [ -d "$(brew --prefix rustup 2>/dev/null)/bin" ]; then export PATH="$(brew --prefix rustup)/bin:$PATH"; fi
+          rustup_prefix="$(brew --prefix rustup 2>/dev/null || true)"
+          if [ -n "$rustup_prefix" ] && [ -d "$rustup_prefix/bin" ]; then export PATH="$rustup_prefix/bin:$PATH"; fi
           cargo +1.98.1 build --release --locked 2>&1 | tee target/platform-evidence/macos-release.log
           bash tools/package-native.sh 2>&1 | tee target/platform-evidence/macos-package.log
           target/release/APEViewer --version | tee target/platform-evidence/macos-version.log
