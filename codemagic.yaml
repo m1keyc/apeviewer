@@ -123,3 +123,23 @@ workflows:
       - native-source/*/dist/*development.zip
       - native-source/*/dist/*development.sha256
       - native-source/*/target/platform-evidence/macos-*.log
+
+  development-runtime:
+    name: Development runtime environment
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: "26.6"
+    scripts:
+      - name: Record the runtime environment
+        script: |
+          set -euo pipefail
+          mkdir -p runtime-preflight
+          {
+            uname -s
+            uname -m
+            sw_vers -productVersion
+            xcodebuild -version
+          } > runtime-preflight/environment.txt
+    artifacts:
+      - runtime-preflight/environment.txt
