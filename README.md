@@ -39,6 +39,8 @@ Mac/Linux are early viewer previews. They do not yet share a native desktop, tra
 
 Launch prices: **$6.99/month or $49/year** (regular $9.99/$79.99). Yearly saves 42% compared with twelve launch-price monthly payments. New subscribers have a 1-day free trial; launch subscribers keep their price while subscribed. Checkout, billing terms and availability: [Account](https://apeviewer.com/account#plan).
 
+Prefer to pay once? **Lifetime Premium is $199.99** for all Premium features on one personal account for the lifetime of the APE Viewer service. No trial or renewal. Lifetime purchases are non-refundable except where required by law or Whop's buyer-protection rules. Platform preview limits still apply, and internet features require the service to remain available. Try Free on your setup first. [Choose Lifetime](https://apeviewer.com/account?period=lifetime#plan) · [Lifetime Terms](https://apeviewer.com/terms#lifetime-premium).
+
 ## Getting started
 
 1. Install the Windows app on the PC you want to reach and turn on sharing in Hosting.
