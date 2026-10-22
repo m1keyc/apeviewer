@@ -1,39 +1,56 @@
-<p align="center">
-  <img src="icon.png" alt="APE Viewer" width="120">
-</p>
+<p align="center"><img src="https://apeviewer.com/app.png" width="96" alt="APE Viewer"></p>
 
-<h1 align="center">APE Viewer</h1>
+# APE Viewer
 
-<p align="center">
-  Use your Windows desktop from a Windows laptop, with each monitor in its own window.<br>
-  Free shows one screen at a time. Optional Premium opens every monitor together.<br>
-  I make APE Viewer. Windows 10/11 on both PCs. <a href="https://apeviewer.com">apeviewer.com</a>
-</p>
+Remote desktop for **Windows, Mac and Linux**. Each remote monitor gets its own window or full screen on the display you choose.
 
-## Download
+**[Choose your download](https://apeviewer.com/downloads)** · [Website](https://apeviewer.com) · [Help](https://apeviewer.com/help) · [Releases](https://github.com/m1keyc/apeviewer/releases)
 
-**[Download the latest version](https://github.com/m1keyc/apeviewer/releases/latest)**
+## Platforms
 
-- **APEViewerSetup.exe**: the installer (recommended).
-- **APEViewer.exe**: the same app without installing.
+| Platform | Current download | Scope |
+| --- | --- | --- |
+| Windows 10/11, x64 | [Stable installer](https://github.com/m1keyc/apeviewer/releases/latest/download/APEViewerSetup.exe) | Connect and share; full Windows app |
+| macOS 13+, Apple Silicon | [Viewer preview](https://apeviewer.com/downloads#preview-notes) | Connect to a Windows PC; real Mac acceptance ongoing |
+| Linux x64, glibc 2.36+ | [Viewer preview](https://apeviewer.com/downloads#linux-setup) | Connect to a Windows PC; X11 or Wayland desktop |
 
-Already installed? Click **Update** in the app; it updates itself from here.
+Mac/Linux are early viewer previews. They do not yet share a native desktop, transfer files, draw or show app-only streams. Linux clipboard is X11 only. Native device/Keychain testing is ongoing; previews update by downloading the next build. See [current requirements and feature matrix](https://apeviewer.com/downloads).
 
 ## What it does
 
-- **Measured, with limits.** The published 3.0 ms result uses a 1440p H.264 test picture on an RTX 3080, with both ends on the same PC. It excludes screen capture, a real network, input response and display scanout. Actual performance depends on both PCs and your network. [How we measure](https://apeviewer.com/compare/how-we-measure).
-- **Made for games.** Hardware H.264 and HEVC, up to 240 fps on high-refresh screens, Xbox-style controllers with rumble, and a mouse that locks to the game.
-- **Play and watch together.** Invite friends to your PC: they see your screen at its real resolution and frame rate, with sound, and can play with their own controller. Great for movies, shows, videos and co-op games.
-- **Every monitor at once**, each in its own window or full screen. Sound, a shared clipboard, file transfer and drawing on the screen.
-- **You decide who gets what.** Per person: mouse, keyboard, controllers, clipboard, sound, files, which screens they see, or only the apps you pick. Ask first before anyone connects.
-- **Connect from anywhere** with Premium, without router setup, or on your home network or Tailscale for free.
-- End-to-end encrypted. Your screens never pass through our servers in readable form.
+- Keep each remote screen separate: move, resize or make it full screen without squeezing every monitor into one picture.
+- Connect on your home network, from anywhere over the internet with Premium, or through the optional Tailscale module.
+- Use mouse and keyboard, with sound, clipboard and controllers where supported by the platform.
+- Choose each person's access, require approval and disconnect people. Windows hosting supports screen or app restrictions, file transfer, drawing and per-person controller permissions.
+- Pair with a code shown on the shared PC, or sign in with your account. End-to-end desktop encryption authenticates the computers, including over the internet.
+- Windows sharing supports NVIDIA, AMD and Intel video encoding. Native preview viewers use their bundled video libraries; performance depends on your hardware and network.
 
-Free: one shared PC, one screen at a time, no time limit. Premium: every screen, up to 4 people, connect from anywhere. $6.99/month or $49/year, with a 1-day free trial. [Compare](https://apeviewer.com/compare).
+## Free and Premium
 
-## Help
+| | Free | Premium |
+| --- | --- | --- |
+| Shared PCs | 1 | Unlimited |
+| Devices you connect from | Unlimited | Unlimited |
+| Screens at once | 1, switch any time | All of them |
+| People connected at once | 1 | Up to 4 |
+| Controllers | 1 | Up to 4 where supported |
+| Home network / optional Tailscale | Yes | Yes |
+| Connect from anywhere over the internet | No | Yes |
 
-- Help and problem codes: [apeviewer.com/help](https://apeviewer.com/help)
-- Report a problem: in the app (Help & Report), or on the Help page.
+Launch prices: **$6.99/month or $49/year** (regular $9.99/$79.99). Yearly saves 42% compared with twelve launch-price monthly payments. New subscribers have a 1-day free trial; launch subscribers keep their price while subscribed. Checkout, billing terms and availability: [Account](https://apeviewer.com/account#plan).
 
-This repository only holds the releases.
+## Getting started
+
+1. Install the Windows app on the PC you want to reach and turn on sharing in Hosting.
+2. Download the viewer for the computer you connect from. Use the same Windows app on Windows, or the appropriate Mac/Linux preview.
+3. Sign in, choose your PC and its screens, and connect. For pairing without account discovery, enter the code shown on the shared PC.
+
+Never connect to a computer without its owner's permission. Keep the OS keychain/keyring and security protections enabled. [Setup and troubleshooting](https://apeviewer.com/help).
+
+## Libraries and source
+
+The current application source is proprietary and private. Releases through 0.5.6 retain their original MIT license.
+
+Native previews dynamically link FFmpeg under LGPL 2.1 or later and OpenH264 under its BSD source license. Each native download includes notices and has a matching codec source/build archive on the same release page. Those components retain their modification, replacement and applicable reverse-engineering rights. [Notices and sources](https://apeviewer.com/downloads#third-party).
+
+Problems: [Help and report form](https://apeviewer.com/help#report). Support: support@apeviewer.com.
