@@ -47,6 +47,8 @@ Prefer to pay once? **Lifetime Premium is $199.99** for all Premium features on 
 2. Download the viewer for the computer you connect from. Use the same Windows app on Windows, or the appropriate Mac/Linux preview.
 3. Sign in, choose your PC and its screens, and connect. For pairing without account discovery, enter the code shown on the shared PC.
 
+For Windows: [Watch the 56-second setup guide](https://www.youtube.com/watch?v=qTgA2Y2G9gM), a silent screenshot walkthrough with sample PC details.
+
 Never connect to a computer without its owner's permission. Keep the OS keychain/keyring and security protections enabled. [Setup and troubleshooting](https://apeviewer.com/help).
 
 ## Libraries and source
